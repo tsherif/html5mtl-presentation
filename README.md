@@ -1,1 +1,1 @@
-Presentation for [Brainhack EDT 2014](http://brainhack.org/brainhack-edt/).
+BrainBrowser presentation for HTML5mtl, November 2014.
