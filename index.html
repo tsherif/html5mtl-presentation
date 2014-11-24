@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">  
+<head>
+  <meta charset="utf-8">
+  <title>BrainBrowser: >Neurological Data Visualization Using WebGL and HTML5</title>
+  <link rel="stylesheet" href="css/reveal.min.css">
+  <link rel="stylesheet" href="css/theme/default.css" id="theme"> 
+  <link rel="stylesheet" href="css/default.min.css">
+  <link rel="icon" type="image/png" href="img/brainbrowser.png">
+  <style>
+    #brainbrowser {
+      width: 450px;
+      height: 450px;
+      margin: 40px auto;
+    }
+
+    .reveal .slide-number {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .reveal section img {
+      max-height: 600px;
+    }
+
+    .reveal pre {
+      box-shadow: none;
+    }
+
+    .reveal .me {
+      margin-top: 42px;
+    }
+
+    .reveal ul ul {
+      font-size: 0.8em;
+    }
+
+    .reveal img {
+      height: 200px;
+    }
+
+    #bb-logo {
+      background-color: black;
+    }
+
+    #html5, #webgl {
+      background-color: white;
+    }
+
+    #diagram {
+      height: 450px;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section>
+        <h1>BrainBrowser</h1>
+        <h3>Neurological Data Visualization<BR>Using WebGL and HTML5</h3>
+        <p>Tarek Sherif</p>
+        <p>McGill University</p>
+      </section>
+
+      <section>
+        <h2>What is BrainBrowser?</h2>
+        <div id="brainbrowser">
+        </div>
+      </section>
+
+      <section>
+        <h2>What is BrainBrowser?</h2>
+        <ul>
+          <li>Open-source JavaScript library exposing web-based tools for neuroimaging</li>
+          <li>
+            Key technologies:
+            <ul>
+              <li>HTML5 Canvas 2D</li>
+              <li>WebGL</li>
+              <li>Web Workers</li>
+            </ul>
+          </li>
+          <img id="bb-logo" src="img/bb-logo-white-mini.png">
+          <img id="webgl" src="img/webgl-logo.png">
+          <img id="html5" src="img/HTML5.png">
+      </section>
+
+      <section>
+        <h2>What is BrainBrowser?</h2>
+        <ul>
+          <li>
+            Volume Viewer
+            <ul>
+              <li>Explore volumetric data through orthogonal slices</li>
+            </ul>
+          </li>
+          <li>
+            Surface Viewer
+            <ul>
+              <li>Explore surface data in real-time 3D</li>
+            </ul>
+          </li>
+        </ul>
+        <img src="img/volume-viewer.png">
+        <img src="img/surface-viewer.png">
+      </section>
+
+      <section>
+        <h2>Background: Neurology</h2>
+        <ul>
+          <li>
+            Brain imaging is a fairly young field
+            <ul>
+              <li>Became widespread in the 1990s</li>
+            </ul>
+          </li>
+          <li>
+            Magnetic Resonance Imaging (MRI) became the most common technique
+            <ul>
+              <li>Low invasiveness</li>
+              <li>No exposure to radiation</li>
+            </ul>
+          </li>
+        </ul>
+        <img src="img/mri.png">
+      </section>
+      
+      <section>
+        <h2>Background: Neurology</h2>
+        <h3>Typical Workflow</h3>
+        <ul>
+          <li>
+            Scanning
+            <ul>
+              <li>Volume of voxels representing intensity of the MR signal</li>
+              <li>Intensity can represent structural, activation or diffusion patterns</li>
+            </ul>
+          </li>
+          <li>
+            Computational Processing
+            <ul>
+              <li>
+                Extract features of interest (e.g. surfaces, measurements)
+              </li>
+            </ul>
+          </li>
+          <li>
+            Visualization
+            <ul>
+              <li>Explore the data</li>
+              <li>Quality control</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Background: Technology</h2>
+        <h3>HTML5 Canvas 2D</h3>
+        <ul>
+          <li>High-performance, scriptable 2D drawing surface</li>
+          <li>Pixel-level image processing</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Background: Technology</h2>
+        <h3>WebGL</h3>
+        <ul>
+          <li>The browser talks directly to the graphics card</li>
+          <li>High-performance 3D graphics</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Background: Technology</h2>
+        <h3>Web Workers</h3>
+        <ul>
+          <li>JavaScript is single-threaded by design</li>
+          <li>Web Workers allow for true multi-threading</li>
+          <li>Compute-intensive tasks can be done in the browser without blocking UI or rendering</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Volume Viewer</h2>
+        <ul>
+          <li>Display orthogonal 2D slices of a 3D volume</li>
+          <li>Uses HTML5 Canvas 2D for image processing and display</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Volume Viewer</h2>
+        <h3>Demo</h3>
+        <ul>
+          <li>
+            <a href="https://brainbrowser.cbrain.mcgill.ca/volume-viewer" target="_blank">
+              https://brainbrowser.cbrain.mcgill.ca/volume-viewer
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Volume Viewer</h2>
+        <h3>Code</h3>
+        <pre>
+          <code class="javascript">
+  BrainBrowser.VolumeViewer.start("visualization-div", function(viewer) {
+    viewer.render();
+    
+    viewer.loadDefaultColorMapFromURL("color-map.txt");
+    
+    viewer.loadVolume({
+      type: "minc",
+      header_url: "volume.mnc.header",
+      raw_data_url: "volume.mnc.raw"
+    });
+  });
+        </code>
+      </pre>
+      </section>
+
+      <section>
+        <h2>Volume Viewer</h2>
+        <h3>Workflow</h3>
+        <img id="diagram" src="img/volume-diagram.png">
+      </section>
+
+      <section>
+        <h2>Volume Viewer</h2>
+        <h3>Workflow</h3>
+        <ul>
+          <li>
+            Load colour map
+            <ul>
+              <li>Over the network using AJAX</li>
+              <li>From local file system using FileReader</li>
+              <li>Array of colours</li>
+              <li>Used to colourize scalar data</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Volume Viewer</h2>
+        <h3>Workflow</h3>
+        <ul>
+          <li>
+            Load data
+            <ul>
+              <li>Over the network using AJAX</li>
+              <li>From local file system using FileReader</li>
+              <li>Volume of intensity values</li>
+              <li>Each voxel contains a scalar value</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Volume Viewer</h2>
+        <h3>Workflow</h3>
+        <ul>
+          <li>
+            Create image
+            <ul>
+              <li>Pull out a slice along one axis</li>
+              <li>Colourize intensity values based on the colour map</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Surface Viewer</h2>
+        <ul>
+          <li>Real-time display of 3D surfaces</li>
+          <li>Visualize various data maps on loaded surfaces</li>
+          <li>WebGL for rendering using the three.js library</li>
+          <li>Web Workers used for data parsing</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Surface Viewer</h2>
+        <h3>Demo</h3>
+        <ul>
+          <li>
+            <a href="https://brainbrowser.cbrain.mcgill.ca/surface-viewer" target="_blank">
+              https://brainbrowser.cbrain.mcgill.ca/surface-viewer
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Surface Viewer</h2>
+        <h3>Code</h3>
+        <pre>
+          <code class="javascript">
+  BrainBrowser.SurfaceViewer.start("visualization-div", function(viewer) {
+    viewer.render();
+
+    viewer.loadColorMapFromURL("models/spectral.txt");
+    
+    viewer.loadModelFromURL("models/brain.obj", {
+      format: "mniobj",
+      complete: function() {
+        viewer.loadIntensityDataFromURL("models/cortical-thickness.txt");
+      }
+    });
+
+  });
+        </code>
+      </pre>
+      </section>
+
+
+      <section>
+        <h2>Surface Viewer</h2>
+        <h3>Workflow</h3>
+        <ul>
+          <li>Load geometry</li>
+          <li>Load intensity data</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Surface Viewer</h2>
+        <h3>Geometry Workflow</h3>
+        <img id="diagram" src="img/geometry-diagram.png">
+      </section>
+
+      <section>
+        <h2>Surface Viewer</h2>
+        <h3>Geometry Workflow</h3>
+        <ul>
+          <li>
+            Load geometry
+            <ul>
+              <li>Over the network using AJAX</li>
+              <li>From local file system using FileReader</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Surface Viewer</h2>
+        <h3>Geometry Workflow</h3>
+        <ul>
+          <li>
+            Parse geometry
+            <ul>
+              <li>One Web Worker script for each supported format</li>
+              <li>Parse external geometry description into internal object model</li>
+              <li>Plugin framework</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Surface Viewer</h2>
+        <h3>Geometry Workflow</h3>
+        <ul>
+          <li>
+            De-index
+            <ul>
+              <li>
+                Geometry usually described in two parts
+                <ul>
+                  <li>Array of vertices in 3D space</li>
+                  <li>Array of indices describe how to build triangle from vertices</li>
+                </ul>
+              </li>
+              <li>
+                Core WebGL 1.0 spec limits indices to 16 bits
+                <ul>
+                  <li>Maximum of 65535 vertices</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Surface Viewer</h2>
+        <h3>Geometry Workflow</h3>
+        <ul>
+          <li>
+            De-index
+            <ul>
+              <li>
+                Neurological geometry can get much bigger
+                <ul>
+                  <li>DTI demo model contains 560674 vertices</li>
+                </ul>
+              </li>
+              <li>
+                De-index Web Worker "unrolls" the geometry indices
+              </li>
+              <li>
+                Makes it so reading vertices in order builds the triangles
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Surface Viewer</h2>
+        <h3>Intensity Data Workflow</h3>
+        <img id="diagram" src="img/intensity-diagram.png">
+      </section>
+
+      <section>
+        <h2>Thanks!</h2>
+          <p>
+            <a href="mailto:tsherif@gmail.com">tsherif@gmail.com</a>
+          </p> 
+          <p>
+            <a href="http://tareksherif.ca">http://tareksherif.ca</a>
+          </p>
+          <p>
+            <a href="https://twitter.com/thsherif">@thsherif</a>
+          </p>
+      </section>
+      
+    </div>
+  </div>
+  <script src="lib/js/head.min.js"></script>
+  <script src="js/reveal.min.js"></script>
+  <script src="js/highlight.min.js"></script>
+  <script src="js/three.r66.min.js"></script>
+  <script src="js/brainbrowser-2.1.1/brainbrowser.surface-viewer.min.js"></script>
+  <script>
+    Reveal.initialize({
+      history: true,
+      slideNumber: true,
+      controls: false
+    });
+
+    Reveal.addEventListener("slidechanged", function(event) {
+      window.onresize();
+    });
+
+    hljs.initHighlightingOnLoad();
+
+    BrainBrowser.config.set("worker_dir", "js/brainbrowser-2.1.1/workers");
+
+
+    BrainBrowser.SurfaceViewer.start("brainbrowser", function(viewer) {
+      viewer.render();
+
+      viewer.loadColorMapFromURL("models/spectral.txt");
+
+      viewer.loadModelFromURL("models/brain.obj", {
+        format: "mniobj",
+        complete: function() {
+          viewer.loadIntensityDataFromURL("models/cortical-thickness.txt");
+        }
+      });
+
+      viewer.autorotate.x = true;
+      viewer.autorotate.y = true;
+
+    });
+    
+  </script>
+</body>
+</html>
