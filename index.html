@@ -59,7 +59,7 @@
     <div class="slides">
       <section>
         <h1>BrainBrowser</h1>
-        <h3>Neurological Data Visualization<BR>Using WebGL and HTML5</h3>
+        <h3>Neurological Data Visualization<BR>Using HTML5 and WebGL</h3>
         <p>Tarek Sherif</p>
         <p>McGill University</p>
       </section>
@@ -132,14 +132,14 @@
         <h3>Typical Workflow</h3>
         <ul>
           <li>
-            Scanning
+            Acquisition
             <ul>
               <li>Volume of voxels representing intensity of the MR signal</li>
               <li>Intensity can represent structural, activation or diffusion patterns</li>
             </ul>
           </li>
           <li>
-            Computational Processing
+            Processing
             <ul>
               <li>
                 Extract features of interest (e.g. surfaces, measurements)
@@ -237,10 +237,9 @@
           <li>
             Load colour map
             <ul>
-              <li>Over the network using AJAX</li>
-              <li>From local file system using FileReader</li>
               <li>Array of colours</li>
               <li>Used to colourize scalar data</li>
+              <li>Loaded over the network or from the local file system</li>
             </ul>
           </li>
         </ul>
@@ -251,12 +250,12 @@
         <h3>Workflow</h3>
         <ul>
           <li>
-            Load data
+            Load volume data
             <ul>
-              <li>Over the network using AJAX</li>
-              <li>From local file system using FileReader</li>
+              <li>Header describing the volume</li>
               <li>Volume of intensity values</li>
               <li>Each voxel contains a scalar value</li>
+              <li>Loaded over the network or from the local file system</li>
             </ul>
           </li>
         </ul>
@@ -271,6 +270,7 @@
             <ul>
               <li>Pull out a slice along one axis</li>
               <li>Colourize intensity values based on the colour map</li>
+              <li>Display on the canvas</li>
             </ul>
           </li>
         </ul>
@@ -343,8 +343,8 @@
           <li>
             Load geometry
             <ul>
-              <li>Over the network using AJAX</li>
-              <li>From local file system using FileReader</li>
+              <li>List of vertices, normals, indices, colours</li>
+              <li>Loaded over the network or from the local file system</li>
             </ul>
           </li>
         </ul>
@@ -418,6 +418,48 @@
         <h2>Surface Viewer</h2>
         <h3>Intensity Data Workflow</h3>
         <img id="diagram" src="img/intensity-diagram.png">
+      </section>
+
+      <section>
+        <h2>Surface Viewer</h2>
+        <h3>Intensity Data Workflow</h3>
+        <ul>
+          <li>
+            Load colour map
+            <ul>
+              <li>Same as for the Volume Viewer</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Surface Viewer</h2>
+        <h3>Intensity Data Workflow</h3>
+        <ul>
+          <li>
+            Load intensity data
+            <ul>
+              <li>List of per-vertex scalar values</li>
+              <li>Loaded over the network or from the local file system</li>
+              <li>One Web Worker script per supported format</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Surface Viewer</h2>
+        <h3>Intensity Data Workflow</h3>
+        <ul>
+          <li>
+            Map colours
+            <ul>
+              <li>Map per-vertex scalar values to colours</li>
+              <li>Apply colours to vertices</li>
+            </ul>
+          </li>
+        </ul>
       </section>
 
       <section>
