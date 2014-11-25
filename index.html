@@ -47,7 +47,15 @@
       background-color: white;
     }
 
-    #diagram {
+    .reveal .big-image {
+      height: 300px;
+    }
+
+    .reveal .bigger-image {
+      height: 350px;
+    }
+
+    .reveal .diagram {
       height: 450px;
     }
 
@@ -82,9 +90,11 @@
               <li>Web Workers</li>
             </ul>
           </li>
-          <img id="bb-logo" src="img/bb-logo-white-mini.png">
-          <img id="webgl" src="img/webgl-logo.png">
-          <img id="html5" src="img/HTML5.png">
+          <div>
+            <img id="bb-logo" src="img/bb-logo-white-mini.png">
+            <img id="webgl" src="img/webgl-logo.png">
+            <img id="html5" src="img/HTML5.png">
+          </div>
       </section>
 
       <section>
@@ -96,15 +106,26 @@
               <li>Explore volumetric data through orthogonal slices</li>
             </ul>
           </li>
+        </ul>
+        <div>
+          <img class="bigger-image" src="img/volume-viewer.png">
+        </div>
+      </section>
+
+      <section>
+        <h2>What is BrainBrowser?</h2>
+        <ul>
           <li>
             Surface Viewer
             <ul>
-              <li>Explore surface data in real-time 3D</li>
+              <li>Explore geometry data in real-time 3D</li>
             </ul>
           </li>
         </ul>
-        <img src="img/volume-viewer.png">
-        <img src="img/surface-viewer.png">
+        <div>
+          <img src="img/surface-viewer.png">
+          <img src="img/dti.png">
+        </div>
       </section>
 
       <section>
@@ -124,7 +145,10 @@
             </ul>
           </li>
         </ul>
-        <img src="img/mri.png">
+        <div>
+          <img src="img/mri.png">
+          <img src="img/bigbrain.png">
+        </div>
       </section>
       
       <section>
@@ -187,9 +211,12 @@
       <section>
         <h2>Volume Viewer</h2>
         <ul>
-          <li>Display orthogonal 2D slices of a 3D volume</li>
+          <li>Display orthogonal 2D slices of a 3D or 4D volume</li>
           <li>Uses HTML5 Canvas 2D for image processing and display</li>
         </ul>
+        <div>
+          <img class="bigger-image" src="img/volume-viewer.png">
+        </div>
       </section>
 
       <section>
@@ -227,7 +254,9 @@
       <section>
         <h2>Volume Viewer</h2>
         <h3>Workflow</h3>
-        <img id="diagram" src="img/volume-diagram.png">
+        <div>
+          <img class="diagram" src="img/volume-diagram.png">
+        </div>
       </section>
 
       <section>
@@ -235,11 +264,42 @@
         <h3>Workflow</h3>
         <ul>
           <li>
-            Load colour map
+            Loading data
+            <ul>
+              <li>Data can be loaded over the network or from the local file system</li>
+              <ul>
+                <li>AJAX for remote data</li>
+                <li>FileReader API for data</li>
+              </ul>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Volume Viewer</h2>
+        <h3>Workflow</h3>
+        <ul>
+          <li>
+            Volume data
+            <ul>
+              <li>3 or 4D array of intensity values</li>
+              <li>Header describing the volume</li>
+              <li>Each voxel contains a scalar intensity value</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Volume Viewer</h2>
+        <h3>Workflow</h3>
+        <ul>
+          <li>
+            Colour maps
             <ul>
               <li>Array of colours</li>
               <li>Used to colourize scalar data</li>
-              <li>Loaded over the network or from the local file system</li>
             </ul>
           </li>
         </ul>
@@ -250,40 +310,31 @@
         <h3>Workflow</h3>
         <ul>
           <li>
-            Load volume data
+            Displaying a slice
             <ul>
-              <li>Header describing the volume</li>
-              <li>Volume of intensity values</li>
-              <li>Each voxel contains a scalar value</li>
-              <li>Loaded over the network or from the local file system</li>
-            </ul>
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Volume Viewer</h2>
-        <h3>Workflow</h3>
-        <ul>
-          <li>
-            Create image
-            <ul>
-              <li>Pull out a slice along one axis</li>
+              <li>Pull out slice along one axis of the volume</li>
               <li>Colourize intensity values based on the colour map</li>
-              <li>Display on the canvas</li>
+              <li>Write to canvas as an image</li>
             </ul>
           </li>
         </ul>
+        <div>
+          <img class="big-image" src="img/volume-viewer-slice.png">
+        </div>
       </section>
 
       <section>
         <h2>Surface Viewer</h2>
         <ul>
-          <li>Real-time display of 3D surfaces</li>
+          <li>Real-time display of 3D surfaces or tractography</li>
           <li>Visualize various data maps on loaded surfaces</li>
           <li>WebGL for rendering using the three.js library</li>
           <li>Web Workers used for data parsing</li>
         </ul>
+        <div>
+          <img src="img/surface-viewer.png">
+          <img src="img/dti.png">
+        </div>
       </section>
 
       <section>
@@ -332,34 +383,40 @@
 
       <section>
         <h2>Surface Viewer</h2>
-        <h3>Geometry Workflow</h3>
-        <img id="diagram" src="img/geometry-diagram.png">
-      </section>
-
-      <section>
-        <h2>Surface Viewer</h2>
-        <h3>Geometry Workflow</h3>
+        <h3>Workflow</h3>
         <ul>
           <li>
-            Load geometry
+            Loading data
             <ul>
-              <li>List of vertices, normals, indices, colours</li>
-              <li>Loaded over the network or from the local file system</li>
+              <li>Data can be loaded over the network or from the local file system</li>
+              <ul>
+                <li>AJAX for remote data</li>
+                <li>FileReader API for data</li>
+              </ul>
             </ul>
           </li>
         </ul>
       </section>
 
+
+      <section>
+        <h2>Surface Viewer</h2>
+        <h3>Geometry Workflow</h3>
+        <div>
+          <img class="diagram" src="img/geometry-diagram.png">
+        </div>
+      </section>
+
       <section>
         <h2>Surface Viewer</h2>
         <h3>Geometry Workflow</h3>
         <ul>
           <li>
-            Parse geometry
+            Geometry data
             <ul>
-              <li>One Web Worker script for each supported format</li>
-              <li>Parse external geometry description into internal object model</li>
-              <li>Plugin framework</li>
+              <li>Vertices: points in 3D space</li>
+              <li>Indices: array of indices into the vertex array to create triangles</li>
+              <li>Sometimes also normals and vertex colours for colouring</li>
             </ul>
           </li>
         </ul>
@@ -373,16 +430,16 @@
             De-index
             <ul>
               <li>
-                Geometry usually described in two parts
+                Two ways to describe geometry in WebGL
                 <ul>
-                  <li>Array of vertices in 3D space</li>
-                  <li>Array of indices describe how to build triangle from vertices</li>
+                  <li>Two arrays: vertices and indices</li>
+                  <li>One array: vertices in drawing order</li>
                 </ul>
               </li>
               <li>
                 Core WebGL 1.0 spec limits indices to 16 bits
                 <ul>
-                  <li>Maximum of 65535 vertices</li>
+                  <li>Maximum of 65536 vertices for indexed geometry</li>
                 </ul>
               </li>
             </ul>
@@ -406,9 +463,7 @@
               <li>
                 De-index Web Worker "unrolls" the geometry indices
               </li>
-              <li>
-                Makes it so reading vertices in order builds the triangles
-              </li>
+              <li>Converts from indexed geometry to unindexed</li>
             </ul>
           </li>
         </ul>
@@ -416,21 +471,21 @@
 
       <section>
         <h2>Surface Viewer</h2>
-        <h3>Intensity Data Workflow</h3>
-        <img id="diagram" src="img/intensity-diagram.png">
-      </section>
-
-      <section>
-        <h2>Surface Viewer</h2>
-        <h3>Intensity Data Workflow</h3>
+        <h3>Geometry Workflow</h3>
         <ul>
-          <li>
-            Load colour map
-            <ul>
-              <li>Same as for the Volume Viewer</li>
-            </ul>
-          </li>
+          <li>Geometry loaded</li>
         </ul>
+        <div>
+          <img class="big-image" src="img/geometry-only.png">
+        </div>
+      </section>
+
+      <section>
+        <h2>Surface Viewer</h2>
+        <h3>Intensity Data Workflow</h3>
+        <div>
+          <img class="diagram" src="img/intensity-diagram.png">
+        </div>
       </section>
 
       <section>
@@ -438,11 +493,17 @@
         <h3>Intensity Data Workflow</h3>
         <ul>
           <li>
-            Load intensity data
+            Intensity data
             <ul>
               <li>List of per-vertex scalar values</li>
-              <li>Loaded over the network or from the local file system</li>
-              <li>One Web Worker script per supported format</li>
+              <li>
+                Can represent various types of information:
+                <ul>
+                  <li>Measurements (e.g. cortical thickness)</li>
+                  <li>Brain regions</li>
+                  <li>Connectivity</li>
+                </ul>
+              </li>
             </ul>
           </li>
         </ul>
@@ -460,6 +521,17 @@
             </ul>
           </li>
         </ul>
+      </section>
+
+      <section>
+        <h2>Surface Viewer</h2>
+        <h3>Intensity Data Workflow</h3>
+        <ul>
+          <li>Intensity data applied</li>
+        </ul>
+        <div>
+          <img class="big-image" src="img/coloured-geometry.png">
+        </div>
       </section>
 
       <section>
